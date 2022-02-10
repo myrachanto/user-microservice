@@ -1,0 +1,38 @@
+version: '3.9'
+
+services:
+  user_backend:
+    build: .
+    # build:
+    #   dockerfile: Dockerfile.local
+    #   context: .
+    #   target: dev
+    container_name: user_backend
+    ports:
+      - 4000:4000
+    volumes:
+      - .:/app
+    depends_on:
+      - user_database
+      # -users  
+    networks:
+      - user
+
+  user_database:
+    image: 'mariadb:10.1.24'
+    container_name: user_database
+    restart: always
+    # ports:
+    #   - 3306:3306 
+    environment:
+       MYSQL_DATABASE: user
+       MYSQL_ROOT_PASSWORD: Johnanthom@7
+    volumes:
+      - .dbdata:/var/lib/mysql
+      - ./init:/docker-entrypoint-initdb.d
+    networks:
+      - user
+
+
+networks:
+  user:

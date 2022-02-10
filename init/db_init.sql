@@ -1,0 +1,2 @@
+GRANT ALL ON *.* TO 'chantos'@'%';
+FLUSH PRIVILEGES;
