@@ -8,6 +8,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/myrachanto/microservice/user/src/controllers"
+	m "github.com/myrachanto/microservice/user/src/middlewares"
 	"github.com/myrachanto/microservice/user/src/repository"
 	service "github.com/myrachanto/microservice/user/src/services"
 
@@ -60,10 +61,10 @@ func StoreApi() {
 	}))
 	front := e.Group("/front")
 	front.POST("/register", controllers.UserController.Create)
-	front.POST("/login", controllers.UserController.Login)
+	front.POST("/login", controllers.UserController.Login, m.Tokenizing)
 	JWTgroup.GET("logout/:token", controllers.UserController.Logout)
-	JWTgroup.PUT("users/:id", controllers.UserController.Update)
-	JWTgroup.DELETE("users/:id", controllers.UserController.Delete)
+	JWTgroup.PUT("users/:id", controllers.UserController.Update, m.Tokenizing)
+	JWTgroup.DELETE("users/:id", controllers.UserController.Delete, m.Tokenizing)
 	//e.DELETE("loggoutall/:id", controllers.UserController.DeleteALL) logout all accounts
 
 	// Start server
