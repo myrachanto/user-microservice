@@ -6,12 +6,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
 )
-
-type MockRepository struct {
-	mock.Mock
-}
 
 func TestValidateUserInputRequiredFields(t *testing.T) {
 	jsondata := `{"FName":"jane","LName":"Doe","UName":"doe","Usercode": "Doe345","Phone":"1234567","Email":   "email@example.com","Password": "1234567","Address":"psd 456 king view"
