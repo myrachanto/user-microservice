@@ -49,7 +49,7 @@ jobs:
 
   docker:
     name: Build Docker Image
-    needs: [tag]
+    # needs: [tag]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
