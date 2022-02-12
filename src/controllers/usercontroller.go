@@ -11,7 +11,7 @@ import (
 	"github.com/labstack/echo/v4"
 	httperors "github.com/myrachanto/custom-http-error"
 	"github.com/myrachanto/microservice/user/src/model"
-	service "github.com/myrachanto/microservice/user/src/services"
+	"github.com/myrachanto/microservice/user/src/service"
 )
 
 //UserController ..

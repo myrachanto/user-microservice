@@ -46,11 +46,11 @@ func (userRepo userrepo) Create(user *model.User) (string, httperors.HttpErr) {
 	if err := user.Validate(); err != nil {
 		return "", err
 	}
-	ok, err1 := user.ValidatePassword(user.Password)
+	ok, err1 := user.ValidatePassword()
 	if !ok {
 		return "", err1
 	}
-	ok = user.ValidateEmail(user.Email)
+	ok = user.ValidateEmail()
 	if !ok {
 		return "", httperors.NewNotFoundError("Your email format is wrong!")
 	}
@@ -59,7 +59,7 @@ func (userRepo userrepo) Create(user *model.User) (string, httperors.HttpErr) {
 		return "", httperors.NewNotFoundError("Your email already exists!")
 	}
 
-	hashpassword, err2 := user.HashPassword(user.Password)
+	hashpassword, err2 := user.HashPassword()
 	if err2 != nil {
 		return "", err2
 	}
@@ -130,7 +130,7 @@ func (userRepo userrepo) Login(auser *model.LoginUser) (*model.Auth, httperors.H
 	// if e != nil {
 	// 	return nil, e
 	// }
-	auth := &model.Auth{UserID: user.ID, UName: user.UName, Usercode: user.Usercode, Business: user.Business, Admin: user.Admin, Picture: user.Picture, Token: tokenString}
+	auth := &model.Auth{UserID: user.ID, UName: user.UName, Usercode: user.Usercode, Admin: user.Admin, Picture: user.Picture, Token: tokenString}
 	GormDB.Create(&auth)
 	IndexRepo.DbClose(GormDB)
 
@@ -276,7 +276,7 @@ func (userRepo userrepo) Update(id int, user *model.User) (*model.User, httperor
 		return nil, httperors.NewNotFoundError("User with that id does not exists!")
 	}
 
-	hashpassword, err2 := user.HashPassword(user.Password)
+	hashpassword, err2 := user.HashPassword()
 	if err2 != nil {
 		return nil, err2
 	}

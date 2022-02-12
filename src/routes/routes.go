@@ -10,7 +10,7 @@ import (
 	"github.com/myrachanto/microservice/user/src/controllers"
 	m "github.com/myrachanto/microservice/user/src/middlewares"
 	"github.com/myrachanto/microservice/user/src/repository"
-	service "github.com/myrachanto/microservice/user/src/services"
+	"github.com/myrachanto/microservice/user/src/service"
 
 	"github.com/spf13/viper"
 )
