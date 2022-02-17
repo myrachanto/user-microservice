@@ -33,7 +33,7 @@ jobs:
     - name: Test
       run: go test -v ./...
       env:
-        MYSQL_HOST: user_database
+        MYSQL_HOST: mysql
         MYSQL_PORT: 3306
         MYSQL_ROOT_PASSWORD: Ilovegolang@7
 
