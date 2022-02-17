@@ -25,7 +25,7 @@ services:
     #   - 3306:3306 
     environment:
        MYSQL_DATABASE: user
-       MYSQL_ROOT_PASSWORD: Johnanthom@7
+       MYSQL_ROOT_PASSWORD: Ilovegolang@7
     volumes:
       - .dbdata:/var/lib/mysql
       - ./init:/docker-entrypoint-initdb.d
