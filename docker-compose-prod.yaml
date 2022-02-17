@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  user_backend:
+    build:
+      dockerfile: prod.dockerfile
+      context: .
+    image: myrachanto/usermicroservice:0.0.1

@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"log"
 
 	httperors "github.com/myrachanto/custom-http-error"
 	"github.com/myrachanto/microservice/user/src/model"
@@ -14,13 +15,14 @@ var (
 )
 
 type UserServiceInterface interface {
-	Create(user *model.User) (string, httperors.HttpErr)
+	Create(user *model.User) (*model.User, httperors.HttpErr)
 	Login(auser *model.LoginUser) (*model.Auth, httperors.HttpErr)
 	Logout(token string) httperors.HttpErr
 	GetOne(code int) (*model.User, httperors.HttpErr)
 	GetAll(search string, page, pagesize int) ([]model.User, httperors.HttpErr)
 	Update(id int, user *model.User) (*model.User, httperors.HttpErr)
 	Delete(id int) (string, httperors.HttpErr)
+	Cleaner(id string) (string, httperors.HttpErr)
 }
 
 type userService struct {
@@ -33,13 +35,14 @@ func NewUserService(repo r.UserRepoInterface) UserServiceInterface {
 	}
 }
 
-func (service userService) Create(user *model.User) (string, httperors.HttpErr) {
+func (service userService) Create(user *model.User) (*model.User, httperors.HttpErr) {
 	if err := user.Validate(); err != nil {
-		return "", err
+		return nil, err
 	}
+	log.Println("service level")
 	s, err1 := r.Userrepo.Create(user)
 	if err1 != nil {
-		return "", err1
+		return nil, err1
 	}
 	return s, nil
 
@@ -115,5 +118,9 @@ func (service userService) Update(id int, user *model.User) (*model.User, httper
 }
 func (service userService) Delete(id int) (string, httperors.HttpErr) {
 	success, failure := r.Userrepo.Delete(id)
+	return success, failure
+}
+func (service userService) Cleaner(id string) (string, httperors.HttpErr) {
+	success, failure := r.Userrepo.Cleaner(id)
 	return success, failure
 }

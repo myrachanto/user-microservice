@@ -2,10 +2,10 @@ version: '3.9'
 
 services:
   user_backend:
-    build: .
-    # build:
-    #   dockerfile: Dockerfile.dev
-    #   context: .
+    # build: .
+    build:
+      dockerfile: Dockerfile.dev
+      context: .
     container_name: user_backend
     ports:
       - 4000:4000

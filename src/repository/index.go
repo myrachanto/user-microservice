@@ -4,6 +4,8 @@ import (
 	// "log"
 	// "os"
 	// "github.com/joho/godotenv"
+	"log"
+
 	httperors "github.com/myrachanto/custom-http-error"
 	"github.com/myrachanto/microservice/user/src/model"
 	"github.com/spf13/viper"
@@ -34,7 +36,7 @@ type Db struct {
 }
 
 func LoaddbConfig() (db Db, err error) {
-	viper.AddConfigPath(".")
+	viper.AddConfigPath("../../")
 	viper.SetConfigName("app")
 	viper.SetConfigType("env")
 
@@ -58,13 +60,13 @@ func (indexRepo indexRepo) InitDB() httperors.HttpErr {
 		return httperors.NewNotFoundError("Something went wrong with viper loading db config --db!")
 	}
 	GormDB, err := gorm.Open(mysql.New(mysql.Config{
-		DSN: sdb.DbUsername + ":" + sdb.DbPassword + "@tcp(user_database:3306)/" + sdb.DbName + "?charset=utf8&parseTime=True&loc=Local", // data source name
-		// DSN:                       sdb.DbUsername + ":" + sdb.DbPassword + "@tcp(user_database:3306)/" + sdb.DbName + "?charset=utf8&parseTime=True&loc=Local", // data source name
-		DefaultStringSize:         256,   // default size for string fields
-		DisableDatetimePrecision:  true,  // disable datetime precision, which not supported before MySQL 5.6
-		DontSupportRenameIndex:    true,  // drop & create when rename index, rename index not supported before MySQL 5.7, MariaDB
-		DontSupportRenameColumn:   true,  // `change` when rename column, rename column not supported before MySQL 8, MariaDB
-		SkipInitializeWithVersion: false, // auto configure based on currently MySQL version
+		// DSN: sdb.DbUsername + ":" + sdb.DbPassword + "@tcp(user_database:3306)/" + sdb.DbName + "?charset=utf8&parseTime=True&loc=Local", // data source name
+		DSN:                       sdb.DbUsername + ":" + sdb.DbPassword + "@tcp(127.0.0.1:3306)/" + sdb.DbName + "?charset=utf8&parseTime=True&loc=Local", // data source name
+		DefaultStringSize:         256,                                                                                                                     // default size for string fields
+		DisableDatetimePrecision:  true,                                                                                                                    // disable datetime precision, which not supported before MySQL 5.6
+		DontSupportRenameIndex:    true,                                                                                                                    // drop & create when rename index, rename index not supported before MySQL 5.7, MariaDB
+		DontSupportRenameColumn:   true,                                                                                                                    // `change` when rename column, rename column not supported before MySQL 8, MariaDB
+		SkipInitializeWithVersion: false,                                                                                                                   // auto configure based on currently MySQL version
 	}), &gorm.Config{
 		SkipDefaultTransaction: true,
 		PrepareStmt:            true,
@@ -78,18 +80,21 @@ func (indexRepo indexRepo) InitDB() httperors.HttpErr {
 	return nil
 }
 func (indexRepo indexRepo) Getconnected() (GormDB *gorm.DB, err httperors.HttpErr) {
+	log.Println("Db Prep --------")
 	sdb, ers := LoaddbConfig()
 	if ers != nil {
+		log.Println(ers)
 		return nil, httperors.NewNotFoundError("Something went wrong with viper --db!")
 	}
+	log.Println("Db connection --------")
 	GormDB, err1 := gorm.Open(mysql.New(mysql.Config{
-		DSN: sdb.DbUsername + ":" + sdb.DbPassword + "@tcp(user_database:3306)/" + sdb.DbName + "?charset=utf8&parseTime=True&loc=Local", // data source name
-		// DSN:                       sdb.DbUsername + ":" + sdb.DbPassword + "@tcp(user_database:3306)/" + sdb.DbName + "?charset=utf8&parseTime=True&loc=Local", // data source name
-		DefaultStringSize:         256,   // default size for string fields
-		DisableDatetimePrecision:  true,  // disable datetime precision, which not supported before MySQL 5.6
-		DontSupportRenameIndex:    true,  // drop & create when rename index, rename index not supported before MySQL 5.7, MariaDB
-		DontSupportRenameColumn:   true,  // `change` when rename column, rename column not supported before MySQL 8, MariaDB
-		SkipInitializeWithVersion: false, // auto configure based on currently MySQL version
+		// DSN: sdb.DbUsername + ":" + sdb.DbPassword + "@tcp(user_database:3306)/" + sdb.DbName + "?charset=utf8&parseTime=True&loc=Local", // data source name
+		DSN:                       sdb.DbUsername + ":" + sdb.DbPassword + "@tcp(127.0.0.1:3306)/" + sdb.DbName + "?charset=utf8&parseTime=True&loc=Local", // data source name
+		DefaultStringSize:         256,                                                                                                                     // default size for string fields
+		DisableDatetimePrecision:  true,                                                                                                                    // disable datetime precision, which not supported before MySQL 5.6
+		DontSupportRenameIndex:    true,                                                                                                                    // drop & create when rename index, rename index not supported before MySQL 5.7, MariaDB
+		DontSupportRenameColumn:   true,                                                                                                                    // `change` when rename column, rename column not supported before MySQL 8, MariaDB
+		SkipInitializeWithVersion: false,                                                                                                                   // auto configure based on currently MySQL version
 	}), &gorm.Config{
 		SkipDefaultTransaction: true,
 		PrepareStmt:            true,
