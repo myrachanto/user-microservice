@@ -18,9 +18,9 @@ var ExpiresAt = time.Now().Add(time.Minute * 100000).Unix()
 
 //User ..
 type User struct {
-	FName    string `json:"fname"`
-	LName    string `json:"lname"`
-	UName    string `json:"uname"`
+	FName    string `json:"f_name"`
+	LName    string `json:"l_name"`
+	UName    string `json:"u_name"`
 	Usercode string `json:"usercode"`
 	Phone    string `json:"phone"`
 	Address  string `json:"address"`

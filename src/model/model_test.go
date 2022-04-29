@@ -1,6 +1,6 @@
 package model
 
-import (
+import ( 
 	"encoding/json"
 	"fmt"
 	"testing"

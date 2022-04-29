@@ -181,11 +181,7 @@ func (controller userController) GetAll(c echo.Context) error {
 	return c.JSON(http.StatusOK, results)
 }
 func (controller userController) GetOne(c echo.Context) error {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		httperror := httperors.NewBadRequestError("Invalid ID")
-		return c.JSON(httperror.Code(), httperror)
-	}
+	id := c.Param("id")
 	user, problem := service.UserService.GetOne(id)
 	if problem != nil {
 		return c.JSON(problem.Code(), problem)
@@ -250,11 +246,7 @@ func (controller userController) Update(c echo.Context) error {
 	}
 
 	user.Picture = filePath1
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		httperror := httperors.NewBadRequestError("Invalid ID")
-		return c.JSON(httperror.Code(), httperror)
-	}
+	id := c.Param("id")
 	updateduser, problem := service.UserService.Update(id, user)
 	if problem != nil {
 		return c.JSON(problem.Code(), problem)

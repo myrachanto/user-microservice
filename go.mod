@@ -4,7 +4,6 @@ go 1.16
 
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
-	github.com/joho/godotenv v1.4.0
 	github.com/labstack/echo/v4 v4.6.3
 	github.com/myrachanto/custom-http-error v0.0.0-20211202111939-98671440b8fa
 	github.com/spf13/viper v1.10.1

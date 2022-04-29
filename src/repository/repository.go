@@ -42,11 +42,11 @@ type UserRepoInterface interface {
 	Login(user *model.LoginUser) (*model.Auth, httperors.HttpErr)
 	Logout(token string) httperors.HttpErr
 	all() (t []model.User, r httperors.HttpErr)
-	GetOne(id int) (*model.User, httperors.HttpErr)
+	GetOne(id string) (*model.User, httperors.HttpErr)
 	userExistbycode(code string) bool
 	userbycode(code string) *model.User
 	GetAll(search string, page, pagesize int) ([]model.User, httperors.HttpErr)
-	Update(id int, user *model.User) (*model.User, httperors.HttpErr)
+	Update(id string, user *model.User) (*model.User, httperors.HttpErr)
 	Delete(id int) (string, httperors.HttpErr)
 	Cleaner(id string) (string, httperors.HttpErr)
 	geneCode() (string, httperors.HttpErr)
@@ -205,8 +205,8 @@ func (userRepo userrepo) geneCode() (string, httperors.HttpErr) {
 	return code, nil
 
 }
-func (userRepo userrepo) GetOne(id int) (*model.User, httperors.HttpErr) {
-	ok := userRepo.userExistByid(id)
+func (userRepo userrepo) GetOne(id string) (*model.User, httperors.HttpErr) {
+	ok := userRepo.userExistbycode(id)
 	if !ok {
 		return nil, httperors.NewNotFoundError("User with that code does not exists!")
 	}
@@ -217,7 +217,7 @@ func (userRepo userrepo) GetOne(id int) (*model.User, httperors.HttpErr) {
 	}
 	defer IndexRepo.DbClose(GormDB)
 
-	GormDB.Model(&user).Where("id = ?", id).First(&user)
+	GormDB.Model(&user).Where("usercode = ?", id).First(&user)
 	return &user, nil
 }
 func (userRepo userrepo) userExistbycode(code string) bool {
@@ -290,8 +290,8 @@ func (userRepo userrepo) GetAll(search string, page, pagesize int) ([]model.User
 
 // 	return "user updated succesifully", nil
 // }
-func (userRepo userrepo) Update(id int, user *model.User) (*model.User, httperors.HttpErr) {
-	ok := userRepo.userExistByid(id)
+func (userRepo userrepo) Update(id string, user *model.User) (*model.User, httperors.HttpErr) {
+	ok := userRepo.userExistbycode(id)
 	if !ok {
 		return nil, httperors.NewNotFoundError("User with that id does not exists!")
 	}
@@ -359,7 +359,7 @@ func (userRepo userrepo) Cleaner(id string) (string, httperors.HttpErr) {
 		return "", err1
 	}
 	defer IndexRepo.DbClose(GormDB)
-	GormDB.Unscoped().Where("u_name = ?", id).Delete(&user)
+	GormDB.Unscoped().Where("usercode = ?", id).Delete(&user)
 
 	return "deleted successfully", nil
 }

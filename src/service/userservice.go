@@ -18,9 +18,9 @@ type UserServiceInterface interface {
 	Create(user *model.User) (*model.User, httperors.HttpErr)
 	Login(auser *model.LoginUser) (*model.Auth, httperors.HttpErr)
 	Logout(token string) httperors.HttpErr
-	GetOne(code int) (*model.User, httperors.HttpErr)
+	GetOne(code string) (*model.User, httperors.HttpErr)
 	GetAll(search string, page, pagesize int) ([]model.User, httperors.HttpErr)
-	Update(id int, user *model.User) (*model.User, httperors.HttpErr)
+	Update(id string, user *model.User) (*model.User, httperors.HttpErr)
 	Delete(id int) (string, httperors.HttpErr)
 	Cleaner(id string) (string, httperors.HttpErr)
 }
@@ -88,7 +88,7 @@ func (service userService) Logout(token string) httperors.HttpErr {
 // 	err1 := r.Userrepository.AdminUpdate(code, status)
 // 	return err1
 // }
-func (service userService) GetOne(code int) (*model.User, httperors.HttpErr) {
+func (service userService) GetOne(code string) (*model.User, httperors.HttpErr) {
 	user, err1 := r.Userrepo.GetOne(code)
 	if err1 != nil {
 		return nil, err1
@@ -106,7 +106,7 @@ func (service userService) GetAll(search string, page, pagesize int) ([]model.Us
 // 	return user, err1
 // }
 
-func (service userService) Update(id int, user *model.User) (*model.User, httperors.HttpErr) {
+func (service userService) Update(id string, user *model.User) (*model.User, httperors.HttpErr) {
 	fmt.Println("update1-controller")
 	fmt.Println(id)
 	user, err1 := r.Userrepo.Update(id, user)
