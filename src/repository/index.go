@@ -102,6 +102,8 @@ func (indexRepo indexRepo) Getconnected() (GormDB *gorm.DB, err httperors.HttpEr
 	if err1 != nil {
 		return nil, httperors.NewNotFoundError("Something went wrong with viper --db!")
 	}
+	GormDB.AutoMigrate(&model.User{})
+	GormDB.AutoMigrate(&model.Auth{})
 	return GormDB, nil
 }
 func (indexRepo indexRepo) DbClose(GormDB *gorm.DB) {
