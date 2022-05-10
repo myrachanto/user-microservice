@@ -6,21 +6,16 @@ import (
 	"testing"
 
 	"github.com/myrachanto/microservice/user/src/model"
-	"github.com/myrachanto/microservice/user/src/repository"
 	"github.com/myrachanto/microservice/user/src/service"
-
 	"github.com/stretchr/testify/assert"
 )
 
 // end to end testing
 var (
-	jsondata = `{"f_name":"Jane","l_name":"Doe","u_name":"doe","usercode": "Doe345","phone":"1234567","email":"email@example1.com","password":"1234567","address":"psd 456 king view"
+	jsondata = `{"f_name":"Jane","l_name":"Doe","u_name":"doe","usercode": "Doe345","phone":"1234567","email":"email@example.com","password":"1234567","address":"psd 456 king view"
 	}`
-	jsondata1 = `{"email":   "email@example1.com","password": "1234567"}`
+	jsondata1 = `{"email":   "email@example.com","password": "1234567"}`
 )
-func init(){
-	repository.IndexRepo.InitDB()
-}
 
 //make end to end testing
 func TestCreateUser(t *testing.T) {
@@ -28,7 +23,6 @@ func TestCreateUser(t *testing.T) {
 	if err := json.Unmarshal([]byte(jsondata), &user); err != nil {
 		t.Errorf("failed to unmarshal user data %v", err.Error())
 	}
-	// fmt.Println(">>>>>>>>>", user)
 	u, err := service.UserService.Create(user)
 	fmt.Println(">>>>>>>>>", u)
 	assert.EqualValues(t, "Jane", u.FName, "failed to validate create method")
@@ -38,13 +32,34 @@ func TestCreateUser(t *testing.T) {
 		t.Errorf("failed to unmarshal user data %v", err.Error())
 	}
 	u2, err2 := service.UserService.Create(user2)
-	assert.EqualValues(t, "Your email already exists!", err2.Message(), "failed to validate create method")
+	assert.EqualValues(t, "that email exist in the our system!", err2.Message(), "failed to validate create method")
 	assert.Nil(t, u2)
 	// afterparty cleaner
 	//use uname to clean after testing
 	service.UserService.Cleaner(u.Usercode)
 }
 
+// func TestLoginUser(t *testing.T) {
+
+// 	user1 := &model.User{}
+// 	if err := json.Unmarshal([]byte(jsondata), &user1); err != nil {
+// 		t.Errorf("failed to unmarshal user data %v", err.Error())
+// 	}
+// 	_, _ = service.UserService.Create(user1)
+// 	user := &LoginUser{}
+// 	if err := json.Unmarshal([]byte(jsondata1), &user); err != nil {
+// 		t.Errorf("failed to unmarshal user data %v", err.Error())
+// 	}
+// 	res, err := service.UserService.Login(user)
+// 	// expected := "user created successifully"
+// 	if res.Token == "" {
+// 		assert.EqualValues(t, "", res, "Something went wrong testing with the Logging method")
+// 		assert.NotNil(t, err, "Something went wrong testing with the Logging method")
+// 	}
+// 	// afterparty cleaner
+// 	//use uname to clean after testing
+// 	service.UserService.Cleaner(res.Code)
+// }
 func TestGetAllUser(t *testing.T) {
 
 	user1 := &model.User{}
