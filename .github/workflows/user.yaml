@@ -13,7 +13,7 @@ jobs:
     env:
       DB_DATABASE: user
       DB_USER: root
-      DB_PASSWORD: ilovegolang457
+      DB_PASSWORD: root
     
     steps:
       - name: "Mysql set up"
