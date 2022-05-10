@@ -12,7 +12,8 @@ services:
     volumes:
       - .:/app
     depends_on:
-      - user_database
+      user_database:
+          condition: service_healthy
       # -users  
     networks:
       - user
@@ -25,7 +26,7 @@ services:
     #   - 3306:3306 
     environment:
        MYSQL_DATABASE: user
-       MYSQL_ROOT_PASSWORD: Ilovegolang@7
+       MYSQL_ROOT_PASSWORD: ilovegolang457
     volumes:
       - .dbdata:/var/lib/mysql
       - ./init:/docker-entrypoint-initdb.d
