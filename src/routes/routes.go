@@ -62,6 +62,7 @@ func StoreApi() {
 	front := e.Group("/front")
 	front.POST("/register", controllers.UserController.Create)
 	front.POST("/login", controllers.UserController.Login, m.Tokenizing)
+	front.GET("/users", controllers.UserController.GetAll, m.Tokenizing)
 	JWTgroup.GET("logout/:token", controllers.UserController.Logout)
 	JWTgroup.PUT("users/:id", controllers.UserController.Update, m.Tokenizing)
 	JWTgroup.DELETE("users/:id", controllers.UserController.Delete, m.Tokenizing)
