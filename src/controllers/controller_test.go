@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/myrachanto/microservice/user/src/model"
+	"github.com/myrachanto/microservice/user/src/repository"
 	"github.com/myrachanto/microservice/user/src/service"
 
 	"github.com/stretchr/testify/assert"
@@ -20,6 +21,7 @@ var (
 
 //make end to end testing
 func TestCreateUser(t *testing.T) {
+	repository.IndexRepo.InitDB()
 	user := &model.User{}
 	if err := json.Unmarshal([]byte(jsondata), &user); err != nil {
 		t.Errorf("failed to unmarshal user data %v", err.Error())
