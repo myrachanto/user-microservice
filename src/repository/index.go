@@ -61,12 +61,7 @@ func (indexRepo indexRepo) InitDB() httperors.HttpErr {
 	}
 	GormDB, err := gorm.Open(mysql.New(mysql.Config{
 		// DSN: sdb.DbUsername + ":" + sdb.DbPassword + "@tcp(user_database:3306)/" + sdb.DbName + "?charset=utf8&parseTime=True&loc=Local", // data source name
-		DSN:                       sdb.DbUsername + ":" + sdb.DbPassword + "@tcp(127.0.0.1:3306)/" + sdb.DbName + "?charset=utf8&parseTime=True&loc=Local", // data source name
-		DefaultStringSize:         256,                                                                                                                     // default size for string fields
-		DisableDatetimePrecision:  true,                                                                                                                    // disable datetime precision, which not supported before MySQL 5.6
-		DontSupportRenameIndex:    true,                                                                                                                    // drop & create when rename index, rename index not supported before MySQL 5.7, MariaDB
-		DontSupportRenameColumn:   true,                                                                                                                    // `change` when rename column, rename column not supported before MySQL 8, MariaDB
-		SkipInitializeWithVersion: false,                                                                                                                   // auto configure based on currently MySQL version
+		DSN:                       sdb.DbUsername + ":" + sdb.DbPassword + "@tcp(127.0.0.1:3306)/" + sdb.DbName + "?charset=utf8&parseTime=True&loc=Local",
 	}), &gorm.Config{
 		SkipDefaultTransaction: true,
 		PrepareStmt:            true,
@@ -74,7 +69,6 @@ func (indexRepo indexRepo) InitDB() httperors.HttpErr {
 	if err != nil {
 		return httperors.NewNotFoundError("Something went wrong with viper loading db config --db!")
 	}
-
 	GormDB.AutoMigrate(&model.User{})
 	GormDB.AutoMigrate(&model.Auth{})
 	return nil
@@ -102,8 +96,6 @@ func (indexRepo indexRepo) Getconnected() (GormDB *gorm.DB, err httperors.HttpEr
 	if err1 != nil {
 		return nil, httperors.NewNotFoundError("Something went wrong with viper --db!")
 	}
-	GormDB.AutoMigrate(&model.User{})
-	GormDB.AutoMigrate(&model.Auth{})
 	return GormDB, nil
 }
 func (indexRepo indexRepo) DbClose(GormDB *gorm.DB) {
