@@ -18,10 +18,12 @@ var (
 	}`
 	jsondata1 = `{"email":   "email@example1.com","password": "1234567"}`
 )
+func init(){
+	repository.IndexRepo.InitDB()
+}
 
 //make end to end testing
 func TestCreateUser(t *testing.T) {
-	repository.IndexRepo.InitDB()
 	user := &model.User{}
 	if err := json.Unmarshal([]byte(jsondata), &user); err != nil {
 		t.Errorf("failed to unmarshal user data %v", err.Error())
