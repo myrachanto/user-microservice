@@ -13,13 +13,13 @@ jobs:
     env:
       DB_DATABASE: user
       DB_USER: root
-      # DB_PASSWORD: root
+      DB_PASSWORD: ""
     
     steps:
       - name: "Mysql set up"
         run : |
           sudo /etc/init.d/mysql start
-          mysql -e 'CREATE DB_DATABASE ${{env.DB_DATABASE}};' -u${{env.DB_USER}}
+          mysql -e 'CREATE DB_DATABASE ${{env.DB_DATABASE}};' -u${{env.DB_USER}} -p{{env.DB_PASSWORD}}
 
       - name: "Checkout Code"
         uses: actions/checkout@v2
