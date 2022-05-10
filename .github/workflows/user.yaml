@@ -10,10 +10,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    env:
-      DB_DATABASE: user
-      DB_USER: root
-      DB_PASSWORD: root
+    # env:
+    #   DB_DATABASE: user
+    #   DB_USER: root
+    #   DB_PASSWORD: root
     
     steps:
 
